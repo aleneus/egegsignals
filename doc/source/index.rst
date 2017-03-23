@@ -6,6 +6,15 @@
 Welcome to egegsignals's documentation!
 =======================================
 
+Electrogastrography (EGG) and electrogastroenterography (EGEG) are electrophysiological methods for diagnostics of stomach and gastrointestinal tract motility.
+
+This package provides a processing of EGG and EGEG signals.
+
+What's new in 0.2.0
+-------------------
+
+* Add more parameters and tests
+
 Contents:
 
 .. toctree::
@@ -13,7 +22,6 @@ Contents:
 
    hfart
    parameters
-
 
 Indices and tables
 ==================
