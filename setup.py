@@ -23,7 +23,7 @@ def read(fname):
 
 setup(
     name="egegsignals",
-    version="0.2.0",
+    version="0.3.0",
     description="Package for processing EGG/EGEG signals",
     author="Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina",
     author_email="aleneus@gmail.com",

@@ -17,6 +17,7 @@
 
 import numpy as np
 from scipy.fftpack import fft
+import scipy.signal as spsig
 
 egeg_fs = {
     'colon' : (0.01, 0.03),
@@ -144,3 +145,36 @@ def rhythmicity_norm(x, dt, fs, spectrum=[]):
     spectrum = spectrum[ind]
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
+
+def stft(x, dt, window_type = 'hanning', window_len = 1200, step = 120):
+    """
+    Calculating of short-time fourier transform
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+        Signal.
+    dt : float 
+       Sampling period.
+    window_type : str
+        Type of window.
+    window_len : int
+        Length of window (in samples).
+    step : int
+        Step for STFT in (in samples).
+
+    Returns
+    -------
+
+    :list of numpy.ndarray
+        Result of STFT.
+    
+    """
+    window = spsig.get_window(window_type, window_len)
+    Xs=[]
+    for i in range(0, len(x)-window_len, step):
+        tmp = np.zeros(len(x))
+        tmp[i:i + window_len] = x[i:i + window_len] * window
+        X = abs(fft(tmp))
+        Xs.append(X)
+    return Xs

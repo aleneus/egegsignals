@@ -150,6 +150,19 @@ class TestRhythmicityNorm(unittest.TestCase):
         t, x = gen.harmonic(600, dt, 0.05, A = 2)
         p2 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p1/p2-1), 0.01)
+
+class TestSTFT(unittest.TestCase):
+    def test_stft_number_of_spectrums(self):
+        dt = 0.5
+        t, x = gen.harmonic(650, dt, 0.05)
+        Xs = par.stft(x, dt, window_len = 120)
+        self.assertEqual(len(Xs), 10)
         
+    def test_stft_short_signal(self):
+        dt = 1
+        t, x = gen.harmonic(60, dt, 0.05)
+        Xs = par.stft(x, dt, window_len = 120)
+        self.assertEqual(len(Xs), 0)
+
 if __name__ == '__main__':
     unittest.main()
