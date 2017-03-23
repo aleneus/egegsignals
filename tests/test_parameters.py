@@ -59,6 +59,37 @@ class TestDominantFrequecy(unittest.TestCase):
         x = x1 + x2
         p = par.dominant_frequency(x, dt, par.egeg_fs['stomach'])
         self.assertAlmostEqual(p, 0.05, places=3)
+
+class TestEnergy(unittest.TestCase):
+    """Test suit for energy."""
+    def test_energy_unit(self):
+        dt = 0.5
+        x = np.array([1,1,1,1,1,1,1,1,1,1]) # ten units # 5 sec
+        p1 = par.energy(x, dt, [0, 1])
+        self.assertEqual(p1, 5)
+    
+    def test_energy_rectangle(self):
+        dt = 0.5
+        x = np.array([2,2,2,2,2,2,2,2,2,2]) # 5 sec
+        p1 = par.energy(x, dt, [0, 1])
+        self.assertEqual(p1, 20)
+        
+    def test_energy_dont_reliant_on_dt(self):
+        dt = 0.5
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.energy(x, dt, par.egeg_fs['stomach'])
+        dt = 0.05
+        t, x = gen.harmonic(600, dt, 0.05)
+        p2 = par.energy(x, dt, par.egeg_fs['stomach'])
+        self.assertTrue(abs(p1/p2 - 1) < 0.01)
+
+    def test_energy_proportional_to_length(self):
+        dt = 0.5
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.energy(x, dt, par.egeg_fs['stomach'])
+        t, x = gen.harmonic(600*10, dt, 0.05)
+        p2 = par.energy(x, dt, par.egeg_fs['stomach'])
+        self.assertTrue(abs(p2/p1/10 - 1) < 0.01)
         
 if __name__ == '__main__':
     unittest.main()

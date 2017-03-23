@@ -49,3 +49,27 @@ def dominant_frequency(x, dt, fs, spectrum=[]):
     ind = (f>=fs[0]) & (f<=fs[1])
     df_ind = spectrum[ind].argmax()
     return f[ind][df_ind]
+
+def energy(x, dt, fs, spectrum=[]):
+    """
+    Return energy of the part of the specturm.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+       Signal
+    dt : float 
+       Sampling period
+    fs : array_like
+       Two frequencies bounds
+    spectrum : array_like
+       Pre-calculated spectrum.
+    
+    """
+
+    if len(spectrum) == 0:
+        spectrum = abs(fft(x))
+		
+    f = np.fft.fftfreq(len(x),dt)
+    ind = (f>=fs[0]) & (f<=fs[1])
+    return sum(spectrum[ind]**2) / (len(x) /dt)
