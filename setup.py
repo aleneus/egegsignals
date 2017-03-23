@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2017 Aleksandr Popov, Anastasia Kuzmina
+# Copyright (C) 2013 -- 2017 Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ setup(
     name="egegsignals",
     version="0.1.0",
     description="Package for processing EGG/EGEG signals",
-    author="Aleksandr Popov, Anastasia Kuzmina",
+    author="Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina",
     author_email="aleneus@gmail.com",
     license = "GPLv3",
     keywords = "electrophysiology electrogastrography electrogastroenterography biomedical signal processing",

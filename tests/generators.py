@@ -16,37 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-from scipy.fftpack import fft
 
-egeg_fs = {
-    'colon' : (0.01, 0.03),
-    'stomach' : (0.03, 0.07),
-    'ileum' : (0.07, 0,13),
-    'nestis' : (0.13, 0.18),
-    'duodenum' : (0.18, 0.25),
-}
-""" Frequency bounds for sections of gastrointestinal tract."""
-
-def dominant_frequency(x, dt, fs, spectrum=[]):
-    """
-    Return dominant frequency of signal in band of frequencies.
-
-    Parameters
-    ----------
-    x : numpy.ndarray
-        Signal
-    dt : float 
-        Sampling period
-    fs : array_like
-        Two frequencies bounds
-    spectrum : array_like
-        Pre-calculated spectrum.
-    
-    """
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-        
-    f = np.fft.fftfreq(len(x), dt)
-    ind = (f>=fs[0]) & (f<=fs[1])
-    df_ind = spectrum[ind].argmax()
-    return f[ind][df_ind]
+def harmonic(T, dt, f, A=1, phi=0):
+    """Generate harmonis signal."""
+    t = np.linspace(0, T, T/dt + 1)
+    x = A * np.cos(2 * np.pi * f * t + phi)
+    return (t, x)

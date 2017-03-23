@@ -1,5 +1,6 @@
 syntax: glob
 egegsignals/__pycache__/*
+tests/__pycache__/*
 build/*
 dist/*
 egegsignals.egg-info/*
