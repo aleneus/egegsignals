@@ -74,14 +74,14 @@ class TestEnergy(unittest.TestCase):
         p1 = par.energy(x, dt, [0, 1])
         self.assertEqual(p1, 20)
         
-    def test_energy_dont_reliant_on_dt(self):
+    def test_energy_dont_rely_on_dt(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
         p1 = par.energy(x, dt, par.egeg_fs['stomach'])
         dt = 0.05
         t, x = gen.harmonic(600, dt, 0.05)
         p2 = par.energy(x, dt, par.egeg_fs['stomach'])
-        self.assertTrue(abs(p1/p2 - 1) < 0.01)
+        self.assertLess(abs(p1/p2 - 1), 0.01)
 
     def test_energy_proportional_to_length(self):
         dt = 0.5
@@ -89,7 +89,38 @@ class TestEnergy(unittest.TestCase):
         p1 = par.energy(x, dt, par.egeg_fs['stomach'])
         t, x = gen.harmonic(600*10, dt, 0.05)
         p2 = par.energy(x, dt, par.egeg_fs['stomach'])
-        self.assertTrue(abs(p2/p1/10 - 1) < 0.01)
+        self.assertLess(abs(p2/p1/10 - 1), 0.01)
+        
+class TestPower(unittest.TestCase):
+    """Test suit for energy."""
+    def test_power_unit(self):
+        dt=1
+        x = np.array([1,1,1,1,1,1,1,1,1,1]) # 10 sec
+        p = par.power(x, dt, (0, 1))
+        self.assertEqual(p, 1)
+    
+    def test_power_rectangle(self):
+        dt=0.5
+        x = np.array([2,2,2,2,2,2,2,2,2,2]) # 5 sec
+        p = par.power(x, dt, (0, 1))
+        self.assertEqual(p, 4)
+        
+    def test_power_dont_rely_on_length(self):
+        dt = 0.5
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.power(x, dt, par.egeg_fs['stomach'])
+        t, x = gen.harmonic(600*10, dt, 0.05)
+        p2 = par.power(x, dt, par.egeg_fs['stomach'])
+        self.assertLess(abs(p2/p1 - 1), 0.01)
+
+    def test_power_dont_rely_on_dt(self):
+        dt = 0.05
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.power(x, dt, par.egeg_fs['stomach'])
+        dt = 0.01
+        t, x = gen.harmonic(600, dt, 0.05)
+        p2 = par.power(x, dt, par.egeg_fs['stomach'])
+        self.assertLess(abs(p2/p1 - 1), 0.01)
         
 if __name__ == '__main__':
     unittest.main()

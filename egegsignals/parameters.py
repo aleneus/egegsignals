@@ -52,7 +52,7 @@ def dominant_frequency(x, dt, fs, spectrum=[]):
 
 def energy(x, dt, fs, spectrum=[]):
     """
-    Return energy of the part of the specturm.
+    Return the energy of the part of the specturm.
 
     Parameters
     ----------
@@ -72,4 +72,25 @@ def energy(x, dt, fs, spectrum=[]):
 		
     f = np.fft.fftfreq(len(x),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
-    return sum(spectrum[ind]**2) / (len(x) /dt)
+    return dt * sum(spectrum[ind]**2) / len(x)
+
+def power(x, dt, fs, spectrum=[]):
+    """
+    Return the power of the part of the specturm.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+       Signal
+    dt : float 
+       Sampling period
+    fs : array_like
+       Two frequencies bounds
+    spectrum : array_like
+       Pre-calculated spectrum.
+    
+    """
+
+    if len(spectrum) == 0:
+        spectrum = abs(fft(x))
+    return energy(x, dt, fs, spectrum) / (len(x) * dt)
