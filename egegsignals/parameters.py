@@ -25,7 +25,6 @@ egeg_fs = {
     'nestis' : (0.13, 0.18),
     'duodenum' : (0.18, 0.25),
 }
-""" Frequency bounds for sections of gastrointestinal tract."""
 
 def dominant_frequency(x, dt, fs, spectrum=[]):
     """
