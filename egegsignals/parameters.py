@@ -94,3 +94,53 @@ def power(x, dt, fs, spectrum=[]):
     if len(spectrum) == 0:
         spectrum = abs(fft(x))
     return energy(x, dt, fs, spectrum) / (len(x) * dt)
+
+def rhythmicity(x, dt, fs, spectrum=[]):
+    """
+    Return Gastroscan-GEM version of the rhythmicity coefficient. Do not use it!
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+       Signal
+    dt : float 
+       Sampling period
+    fs : array_like
+       Two frequencies bounds
+    spectrum : array_like
+       Pre-calculated spectrum.
+    
+    """
+    if len(spectrum) == 0:
+        spectrum = abs(fft(x))
+	
+    f = np.fft.fftfreq(len(x),dt)
+    ind = (f>=fs[0]) & (f<=fs[1])
+    spectrum = spectrum[ind]
+    envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
+    return  envelope / len(spectrum)
+
+def rhythmicity_norm(x, dt, fs, spectrum=[]):
+    """
+    Return Gastroscan-GEM version of the rhythmicity coefficient.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+       Signal
+    dt : float 
+       Sampling period
+    fs : array_like
+       Two frequencies bounds
+    spectrum : array_like
+       Pre-calculated spectrum.
+    
+    """
+    if len(spectrum) == 0:
+        spectrum = abs(fft(x))
+        
+    f = np.fft.fftfreq(len(x),dt)
+    ind = (f>=fs[0]) & (f<=fs[1])
+    spectrum = spectrum[ind]
+    envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
+    return  envelope / len(spectrum) / np.max(spectrum)

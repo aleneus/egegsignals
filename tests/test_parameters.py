@@ -65,14 +65,14 @@ class TestEnergy(unittest.TestCase):
     def test_energy_unit(self):
         dt = 0.5
         x = np.array([1,1,1,1,1,1,1,1,1,1]) # ten units # 5 sec
-        p1 = par.energy(x, dt, [0, 1])
-        self.assertEqual(p1, 5)
+        p = par.energy(x, dt, [0, 1])
+        self.assertEqual(p, 5)
     
     def test_energy_rectangle(self):
         dt = 0.5
         x = np.array([2,2,2,2,2,2,2,2,2,2]) # 5 sec
-        p1 = par.energy(x, dt, [0, 1])
-        self.assertEqual(p1, 20)
+        p = par.energy(x, dt, [0, 1])
+        self.assertEqual(p, 20)
         
     def test_energy_dont_rely_on_dt(self):
         dt = 0.5
@@ -121,6 +121,35 @@ class TestPower(unittest.TestCase):
         t, x = gen.harmonic(600, dt, 0.05)
         p2 = par.power(x, dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p2/p1 - 1), 0.01)
+        
+class TestRhythmicity(unittest.TestCase):
+    """Test suit for energy."""
+    def test_rhythmicity_rely_on_power(self):
+        dt = 0.5
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.rhythmicity(x, dt, par.egeg_fs['stomach'])
+        t, x = gen.harmonic(600, dt, 0.05, A = 2)
+        p2 = par.rhythmicity(x, dt, par.egeg_fs['stomach'])
+        self.assertLess(p1, p2)
+        
+class TestRhythmicityNorm(unittest.TestCase):
+    """Test suit for energy."""
+    def test_rhythmicity_rely_on_power(self):
+        dt = 0.5
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
+        t, x = gen.harmonic(600, dt, 0.05, A = 2)
+        p2 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
+        self.assertEqual(p1/p2, 1)
+        
+    def test_rhythmicity_norm_dont_rely_on_dt(self):
+        dt = 0.05
+        t, x = gen.harmonic(600, dt, 0.05)
+        p1 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
+        dt = 0.01
+        t, x = gen.harmonic(600, dt, 0.05, A = 2)
+        p2 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
+        self.assertLess(abs(p1/p2-1), 0.01)
         
 if __name__ == '__main__':
     unittest.main()
