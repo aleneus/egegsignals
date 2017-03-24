@@ -10,10 +10,18 @@ Electrogastrography (EGG) and electrogastroenterography (EGEG) are electrophysio
 
 This package provides a processing of EGG and EGEG signals.
 
-What's new in 0.2.0
+Requirements
+------------
+
+* numpy
+* scipy
+
+What's new in 1.0.0
 -------------------
 
-* Add more parameters and tests
+* Interfaces of base parameters functions changed. Now that functions need spectrum and don't need signal x(t).
+* Short-time Fourier transform implemented.
+* More tests added.
 
 Contents:
 
