@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-from scipy.fftpack import fft
+import scipy.fftpack
 from scipy import signal
 
 egeg_fs = {
@@ -27,101 +27,91 @@ egeg_fs = {
     'duodenum' : (0.18, 0.25),
 }
 
-def dominant_frequency(x, dt, fs, spectrum=[]):
+def spectrum(x):
+    """Return amplitude spectrum of signal.
+
+    Parameters
+    ----------
+    x : array_like
+        Signal.
+
+    """
+    return abs(scipy.fftpack.fft(x))
+
+def dominant_frequency(spectrum, dt, fs):
     """
     Return dominant frequency of signal in band of frequencies.
 
     Parameters
     ----------
-    x : numpy.ndarray
-        Signal
+    spectrum : array_like
+        Pre-calculated spectrum.
     dt : float 
         Sampling period
     fs : array_like
         Two frequencies bounds
-    spectrum : array_like
-        Pre-calculated spectrum.
     
     """
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-        
-    f = np.fft.fftfreq(len(x), dt)
+    f = np.fft.fftfreq(len(spectrum), dt)
     ind = (f>=fs[0]) & (f<=fs[1])
     df_ind = spectrum[ind].argmax()
     return f[ind][df_ind]
 
-def energy(x, dt, fs, spectrum=[]):
+def energy(spectrum, dt, fs):
     """
     Return the energy of the part of the specturm.
 
     Parameters
     ----------
-    x : numpy.ndarray
-       Signal
+    spectrum : array_like
+       Pre-calculated spectrum.
     dt : float 
        Sampling period
     fs : array_like
        Two frequencies bounds
-    spectrum : array_like
-       Pre-calculated spectrum.
     
     """
-
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-		
-    f = np.fft.fftfreq(len(x),dt)
+    f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
-    return dt * sum(spectrum[ind]**2) / len(x)
+    return dt * sum(spectrum[ind]**2) / len(spectrum)
 
-def power(x, dt, fs, spectrum=[]):
+def power(spectrum, dt, fs):
     """
     Return the power of the part of the specturm.
 
     Parameters
     ----------
-    x : numpy.ndarray
-       Signal
+    spectrum : array_like
+       Pre-calculated spectrum.
     dt : float 
        Sampling period
     fs : array_like
        Two frequencies bounds
-    spectrum : array_like
-       Pre-calculated spectrum.
     
     """
+    return energy(spectrum, dt, fs) / (len(spectrum) * dt)
 
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-    return energy(x, dt, fs, spectrum) / (len(x) * dt)
-
-def rhythmicity(x, dt, fs, spectrum=[]):
+def rhythmicity(spectrum, dt, fs):
     """
     Return Gastroscan-GEM version of the rhythmicity coefficient. Do not use it!
 
     Parameters
     ----------
-    x : numpy.ndarray
-       Signal
+    spectrum : array_like
+       Pre-calculated spectrum.
     dt : float 
        Sampling period
     fs : array_like
        Two frequencies bounds
-    spectrum : array_like
-       Pre-calculated spectrum.
     
     """
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-	
-    f = np.fft.fftfreq(len(x),dt)
+    f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
     spectrum = spectrum[ind]
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum)
 
-def rhythmicity_norm(x, dt, fs, spectrum=[]):
+def rhythmicity_norm(spectrum, dt, fs):
     """
     Return Gastroscan-GEM version of the rhythmicity coefficient.
 
@@ -137,16 +127,14 @@ def rhythmicity_norm(x, dt, fs, spectrum=[]):
        Pre-calculated spectrum.
     
     """
-    if len(spectrum) == 0:
-        spectrum = abs(fft(x))
-        
-    f = np.fft.fftfreq(len(x),dt)
+    f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
     spectrum = spectrum[ind]
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
 def _expand_to(x, new_len):
+    """Add zeros to signal. For internal use."""
     if new_len <= len(x):
         return x
     x_exp = np.zeros(new_len)
@@ -193,6 +181,30 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     for i in range(0, len(x)-nseg + 1, nstep):
         seg = x[i : i+nseg] * wind
         seg = _expand_to(seg, nseg_exp)
-        X = abs(fft(seg))
+        X = spectrum(seg)
         Xs.append(X)
     return Xs
+
+# def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
+#     """
+#     Return dominant frequency instability coefficient
+
+#     Parameters
+#     ----------
+#     fs : array_like
+#        Two frequencies bounds
+#     x : numpy.ndarray
+#         Signal.
+#     dt : float 
+#        Sampling period.
+#     window : str
+#         Type of window.
+#     nseg : int
+#         Length of segment (in samples).
+#     nstep : int
+#         Length of step (in samples).
+#     nfft : int 
+#         Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+
+#     """
+#     pass
