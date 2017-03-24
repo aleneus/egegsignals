@@ -19,9 +19,16 @@ Requirements
 What's new in 1.0.0
 -------------------
 
-* Interfaces of base parameters functions changed. Now that functions need spectrum and don't need signal x(t).
+* Interfaces of base parameters functions changed. Now that functions need spectrum and don't need signal x more.
 * Short-time Fourier transform implemented.
-* More tests added.
+* DFIC parameter added.
+* Help functions spectrum and expand_to added.
+* Additional tests added.
+
+.. toctree::
+   :maxdepth: 1
+
+   What's new in 0.2.0 <0.2.0>
 
 Contents:
 
