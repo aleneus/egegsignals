@@ -16,8 +16,8 @@ Requirements
 * numpy
 * scipy
 
-What's new in 1.0.0
--------------------
+What's new in 1.0
+-----------------
 
 * Interfaces of base parameters functions changed. Now that functions need spectrum and don't need signal x more.
 * Short-time Fourier transform implemented.
