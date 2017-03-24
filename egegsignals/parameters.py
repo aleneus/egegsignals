@@ -35,11 +35,23 @@ def spectrum(x):
     x : array_like
         Signal.
 
+    Returns
+    -------
+    : numpy.array
+        Two-side amplitude spectrum.
+
     """
     return abs(scipy.fftpack.fft(x))
 
 def expand_to(x, new_len):
-    """Add zeros to signal. For doing magick with resolution in spectrum."""
+    """Add zeros to signal. For doing magick with resolution in spectrum.
+
+    Returns
+    -------
+    : numpy.array
+        Signal expanded by zeros.
+    
+    """
     if new_len <= len(x):
         return x
     x_exp = np.zeros(new_len)
@@ -55,10 +67,15 @@ def dominant_frequency(spectrum, dt, fs):
     spectrum : array_like
         Pre-calculated spectrum.
     dt : float 
-        Sampling period
+        Sampling period.
     fs : array_like
-        Two frequencies bounds
+        Two frequencies bounds.
     
+    Returns
+    -------
+    : float
+        Value of parameter.
+
     """
     f = np.fft.fftfreq(len(spectrum), dt)
     ind = (f>=fs[0]) & (f<=fs[1])
@@ -78,6 +95,11 @@ def energy(spectrum, dt, fs):
     fs : array_like
        Two frequencies bounds
     
+    Returns
+    -------
+    : float
+        Value of parameter.
+
     """
     f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
@@ -96,12 +118,17 @@ def power(spectrum, dt, fs):
     fs : array_like
        Two frequencies bounds
     
+    Returns
+    -------
+    : float
+        Value of parameter.
+
     """
     return energy(spectrum, dt, fs) / (len(spectrum) * dt)
 
 def rhythmicity(spectrum, dt, fs):
     """
-    Return Gastroscan-GEM version of the rhythmicity coefficient. Do not use it!
+    Return Gastroscan-GEM version of the rhythmicity coefficient. Do not use it.
 
     Parameters
     ----------
@@ -112,6 +139,11 @@ def rhythmicity(spectrum, dt, fs):
     fs : array_like
        Two frequencies bounds
     
+    Returns
+    -------
+    : float
+        Value of parameter.
+
     """
     f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
@@ -121,7 +153,7 @@ def rhythmicity(spectrum, dt, fs):
 
 def rhythmicity_norm(spectrum, dt, fs):
     """
-    Return Gastroscan-GEM version of the rhythmicity coefficient.
+    Return normalized Gastroscan-GEM version of the rhythmicity coefficient.
 
     Parameters
     ----------
@@ -132,6 +164,11 @@ def rhythmicity_norm(spectrum, dt, fs):
     fs : array_like
        Two frequencies bounds
     
+    Returns
+    -------
+    : float
+        Value of parameter.
+
     """
     f = np.fft.fftfreq(len(spectrum),dt)
     ind = (f>=fs[0]) & (f<=fs[1])
@@ -161,7 +198,7 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     Returns
     -------
 
-    :list of numpy.ndarray
+    : list of numpy.ndarray
         Result of STFT.
     
     """
@@ -203,6 +240,11 @@ def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
         Length of step (in samples).
     nfft : int 
         Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+
+    Returns
+    -------
+    : float
+        Value of parameter.
 
     """
     Xs = stft(x, dt, nseg, nstep, window, nfft, padded)

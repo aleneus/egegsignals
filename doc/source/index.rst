@@ -35,8 +35,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   hfart
    parameters
+   hfart
 
 Indices and tables
 ==================
