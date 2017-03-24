@@ -38,6 +38,14 @@ def spectrum(x):
     """
     return abs(scipy.fftpack.fft(x))
 
+def expand_to(x, new_len):
+    """Add zeros to signal. For doing magick with resolution in spectrum."""
+    if new_len <= len(x):
+        return x
+    x_exp = np.zeros(new_len)
+    x_exp[0 : len(x)] = x
+    return x_exp
+
 def dominant_frequency(spectrum, dt, fs):
     """
     Return dominant frequency of signal in band of frequencies.
@@ -117,14 +125,12 @@ def rhythmicity_norm(spectrum, dt, fs):
 
     Parameters
     ----------
-    x : numpy.ndarray
-       Signal
+    spectrum : array_like
+       Pre-calculated spectrum.
     dt : float 
        Sampling period
     fs : array_like
        Two frequencies bounds
-    spectrum : array_like
-       Pre-calculated spectrum.
     
     """
     f = np.fft.fftfreq(len(spectrum),dt)
@@ -133,17 +139,9 @@ def rhythmicity_norm(spectrum, dt, fs):
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
-def _expand_to(x, new_len):
-    """Add zeros to signal. For internal use."""
-    if new_len <= len(x):
-        return x
-    x_exp = np.zeros(new_len)
-    x_exp[0 : len(x)] = x
-    return x_exp
-
 def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     """
-    Calculating of short-time fourier transform
+    Return result of short-time fourier transform.
 
     Parameters
     ----------
@@ -158,7 +156,7 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     nstep : int
         Length of step (in samples).
     nfft : int 
-        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+        Length of the FFT. If None or less than nseg, the FFT length is nseg.
 
     Returns
     -------
@@ -171,7 +169,7 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     Xs=[]
     if padded:
         L = len(x) + (nseg - len(x) % nseg) % nseg
-        x = _expand_to(x, L)
+        x = expand_to(x, L)
 
     if not nfft:
         nseg_exp = nseg
@@ -180,31 +178,33 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
         
     for i in range(0, len(x)-nseg + 1, nstep):
         seg = x[i : i+nseg] * wind
-        seg = _expand_to(seg, nseg_exp)
+        seg = expand_to(seg, nseg_exp)
         X = spectrum(seg)
         Xs.append(X)
     return Xs
 
-# def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
-#     """
-#     Return dominant frequency instability coefficient
+def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
+    """
+    Return dominant frequency instability coefficient.
 
-#     Parameters
-#     ----------
-#     fs : array_like
-#        Two frequencies bounds
-#     x : numpy.ndarray
-#         Signal.
-#     dt : float 
-#        Sampling period.
-#     window : str
-#         Type of window.
-#     nseg : int
-#         Length of segment (in samples).
-#     nstep : int
-#         Length of step (in samples).
-#     nfft : int 
-#         Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+    Parameters
+    ----------
+    fs : array_like
+       Two frequencies bounds
+    x : numpy.ndarray
+        Signal.
+    dt : float 
+       Sampling period.
+    window : str
+        Type of window.
+    nseg : int
+        Length of segment (in samples).
+    nstep : int
+        Length of step (in samples).
+    nfft : int 
+        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
 
-#     """
-#     pass
+    """
+    Xs = stft(x, dt, nseg, nstep, window, nfft, padded)
+    dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
+    return np.std(dfs) / np.average(dfs)

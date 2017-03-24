@@ -20,6 +20,7 @@ from egegsignals import parameters as par
 import unittest
 import numpy as np
 import generators as gen
+import random
 
 class TestSpectrum(unittest.TestCase):
     """Test suit for spectrum."""
@@ -162,21 +163,21 @@ class TestExpandTo(unittest.TestCase):
     def test_expand_to_dont_need_expand(self):
         x = np.array([1,1,1,1,1,1,1,1,1,1])
         n1 = len(x)
-        x = par._expand_to(x, len(x))
+        x = par.expand_to(x, len(x))
         n2 = len(x)
         self.assertEqual(n1, n2)
 
     def test_expand_to_need_expand(self):
         x = np.array([1,1,1,1,1,1,1,1,1,1])
         n1 = len(x)
-        x = par._expand_to(x, len(x) + 3)
+        x = par.expand_to(x, len(x) + 3)
         n2 = len(x)
         self.assertEqual(n1, n2 -3)
         
     def test_expand_to_need_expand_check_zeros(self):
         x = np.array([1,1,1,1,1,1,1,1,1,1])
         s1 = sum(x)
-        x = par._expand_to(x, len(x) + 3)
+        x = par.expand_to(x, len(x) + 3)
         s2 = sum(x)
         self.assertEqual(s1, s2)
         
@@ -211,8 +212,18 @@ class TestSTFT(unittest.TestCase):
         Xs = par.stft(x, dt, 3, 3, window='hanning', nfft=None, padded=True)
         self.assertEqual(len(Xs), 3)
 
-# class TestDFIC(unittest.TestCase):
-#     pass
+class TestDFIC(unittest.TestCase):
+    def test_dfic_long_harmonic(self):
+        dt = 0.5
+        t, x = gen.harmonic(60*40, dt, 0.05)
+        p = par.dfic(par.egeg_fs['stomach'], x, dt, nseg = 1200, nstep = 120)
+        self.assertAlmostEqual(p, 0, places=3)
+
+    def test_dfic_random_signal(self):
+        dt = 0.25
+        x = np.array([random.randint(-1000, 1000) for i in range(4800)])
+        p = par.dfic((0, 2), x, dt, nseg = 1200, nstep = 120)
+        self.assertLess(0.3, p)
         
 if __name__ == '__main__':
     unittest.main()
