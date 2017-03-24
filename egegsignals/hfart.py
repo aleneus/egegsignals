@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina
+# Copyright (C) 2013 -- 2017 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 """
 Functions for high-frequency analysis (HFA) of electophysiological signals for detection of short artifacts and quantitative assessment of the quality of signals.
+
+This module written with Anastasia Kuzmina in 2014.
 
 """
 

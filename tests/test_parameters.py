@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina
+# Copyright (C) 2013 -- 2017 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -151,18 +151,58 @@ class TestRhythmicityNorm(unittest.TestCase):
         p2 = par.rhythmicity_norm(x, dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p1/p2-1), 0.01)
 
-class TestSTFT(unittest.TestCase):
-    def test_stft_number_of_spectrums(self):
-        dt = 0.5
-        t, x = gen.harmonic(650, dt, 0.05)
-        Xs = par.stft(x, dt, window_len = 120)
-        self.assertEqual(len(Xs), 10)
-        
-    def test_stft_short_signal(self):
-        dt = 1
-        t, x = gen.harmonic(60, dt, 0.05)
-        Xs = par.stft(x, dt, window_len = 120)
-        self.assertEqual(len(Xs), 0)
+class TestExpandTo(unittest.TestCase):
+    def test_expand_to_dont_need_expand(self):
+        x = np.array([1,1,1,1,1,1,1,1,1,1])
+        n1 = len(x)
+        x = par._expand_to(x, len(x))
+        n2 = len(x)
+        self.assertEqual(n1, n2)
 
+    def test_expand_to_need_expand(self):
+        x = np.array([1,1,1,1,1,1,1,1,1,1])
+        n1 = len(x)
+        x = par._expand_to(x, len(x) + 3)
+        n2 = len(x)
+        self.assertEqual(n1, n2 -3)
+        
+    def test_expand_to_need_expand_check_zeros(self):
+        x = np.array([1,1,1,1,1,1,1,1,1,1])
+        s1 = sum(x)
+        x = par._expand_to(x, len(x) + 3)
+        s2 = sum(x)
+        self.assertEqual(s1, s2)
+        
+class TestSTFT(unittest.TestCase):
+    def test_stft_number_of_spectrums_no_overlap(self):
+        dt = 1
+        x = np.array([0,1,2,3,4,5,6,7,8,9])
+        Xs = par.stft(x, dt, 2, 2, window='hanning', nfft=None, padded=False)
+        self.assertEqual(len(Xs), 5)
+        
+    def test_stft_number_of_spectrums_overlap(self):
+        dt = 1
+        x = np.array([0,1,2,3,4,5,6,7,8,9])
+        Xs = par.stft(x, dt, 2, 1, window='hanning', nfft=None, padded=False)
+        self.assertEqual(len(Xs), 9)
+        
+    def test_stft_len_of_spectrum_dont_add_zeros_to_segments(self):
+        dt = 1
+        x = np.array([0,1,2,3,4,5,6,7,8,9])
+        Xs = par.stft(x, dt, 2, 2, window='hanning', nfft=None, padded=False)
+        self.assertEqual(len(Xs[0]), 2)
+
+    def test_stft_len_of_spectrum_add_zeros_to_segments(self):
+        dt = 1
+        x = np.array([0,1,2,3,4,5,6,7,8,9])
+        Xs = par.stft(x, dt, 2, 2, window='hanning', nfft=4, padded=False)
+        self.assertEqual(len(Xs[0]), 4)
+
+    def test_stft_padding_true(self):
+        dt = 1
+        x = np.array([0,1,2,3,4,5,6])
+        Xs = par.stft(x, dt, 3, 3, window='hanning', nfft=None, padded=True)
+        self.assertEqual(len(Xs), 3)
+        
 if __name__ == '__main__':
     unittest.main()

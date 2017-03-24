@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov, Aleksey Tyulpin, Anastasia Kuzmina
+# Copyright (C) 2013 -- 2017 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 import numpy as np
 from scipy.fftpack import fft
-import scipy.signal as spsig
+from scipy import signal
 
 egeg_fs = {
     'colon' : (0.01, 0.03),
@@ -146,7 +146,14 @@ def rhythmicity_norm(x, dt, fs, spectrum=[]):
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
-def stft(x, dt, window_type = 'hanning', window_len = 1200, step = 120):
+def _expand_to(x, new_len):
+    if new_len <= len(x):
+        return x
+    x_exp = np.zeros(new_len)
+    x_exp[0 : len(x)] = x
+    return x_exp
+
+def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     """
     Calculating of short-time fourier transform
 
@@ -156,12 +163,14 @@ def stft(x, dt, window_type = 'hanning', window_len = 1200, step = 120):
         Signal.
     dt : float 
        Sampling period.
-    window_type : str
+    window : str
         Type of window.
-    window_len : int
-        Length of window (in samples).
-    step : int
-        Step for STFT in (in samples).
+    nseg : int
+        Length of segment (in samples).
+    nstep : int
+        Length of step (in samples).
+    nfft : int 
+        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
 
     Returns
     -------
@@ -170,11 +179,20 @@ def stft(x, dt, window_type = 'hanning', window_len = 1200, step = 120):
         Result of STFT.
     
     """
-    window = spsig.get_window(window_type, window_len)
+    wind = signal.get_window(window, nseg)
     Xs=[]
-    for i in range(0, len(x)-window_len, step):
-        tmp = np.zeros(len(x))
-        tmp[i:i + window_len] = x[i:i + window_len] * window
-        X = abs(fft(tmp))
+    if padded:
+        L = len(x) + (nseg - len(x) % nseg) % nseg
+        x = _expand_to(x, L)
+
+    if not nfft:
+        nseg_exp = nseg
+    else:
+        nseg_exp = max(nseg, nfft)
+        
+    for i in range(0, len(x)-nseg + 1, nstep):
+        seg = x[i : i+nseg] * wind
+        seg = _expand_to(seg, nseg_exp)
+        X = abs(fft(seg))
         Xs.append(X)
     return Xs
