@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+""" Parametes of electrogastroenterography signals and some help functions.
+
+"""
+
 import numpy as np
 import scipy.fftpack
 from scipy import signal
