@@ -26,7 +26,7 @@ from scipy import signal
 egeg_fs = {
     'colon' : (0.01, 0.03),
     'stomach' : (0.03, 0.07),
-    'ileum' : (0.07, 0,13),
+    'ileum' : (0.07, 0.13),
     'nestis' : (0.13, 0.18),
     'duodenum' : (0.18, 0.25),
 }
