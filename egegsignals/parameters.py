@@ -31,6 +31,7 @@ egeg_fs = {
     'duodenum' : (0.18, 0.25),
 }
 
+# TODO: use dsplab of fftpack
 def spectrum(x):
     """Return amplitude spectrum of signal.
 
@@ -47,6 +48,7 @@ def spectrum(x):
     """
     return abs(scipy.fftpack.fft(x))
 
+# TODO: use dsplab
 def expand_to(x, new_len):
     """Add zeros to signal. For doing magick with resolution in spectrum.
 
@@ -180,7 +182,8 @@ def rhythmicity_norm(spectrum, dt, fs):
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
-def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
+# TODO: use dsplab
+def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """
     Return result of short-time fourier transform.
 
@@ -188,7 +191,7 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     ----------
     x : numpy.ndarray
         Signal.
-    dt : float 
+    dt : float
        Sampling period.
     window : str
         Type of window.
@@ -224,14 +227,15 @@ def stft(x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
         Xs.append(X)
     return Xs
 
-def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
+# TODO: name fs, fs seems to be a sampling frequency
+def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """
     Return dominant frequency instability coefficient.
 
     Parameters
     ----------
     fs : array_like
-       Two frequencies bounds
+        Two frequencies bounds   
     x : numpy.ndarray
         Signal.
     dt : float 
@@ -254,3 +258,5 @@ def dfic(fs, x, dt, nseg, nstep, window='hanning', nfft=None, padded=False):
     Xs = stft(x, dt, nseg, nstep, window, nfft, padded)
     dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
     return np.std(dfs) / np.average(dfs)
+
+# TODO: test all after using dsplab
