@@ -153,28 +153,6 @@ class TestRhythmicityNorm(unittest.TestCase):
         p2 = par.rhythmicity_norm(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p1/p2-1), 0.01)
 
-class TestExpandTo(unittest.TestCase):
-    def test_expand_to_dont_need_expand(self):
-        x = np.array([1,1,1,1,1,1,1,1,1,1])
-        n1 = len(x)
-        x = par.expand_to(x, len(x))
-        n2 = len(x)
-        self.assertEqual(n1, n2)
-
-    def test_expand_to_need_expand(self):
-        x = np.array([1,1,1,1,1,1,1,1,1,1])
-        n1 = len(x)
-        x = par.expand_to(x, len(x) + 3)
-        n2 = len(x)
-        self.assertEqual(n1, n2 -3)
-        
-    def test_expand_to_need_expand_check_zeros(self):
-        x = np.array([1,1,1,1,1,1,1,1,1,1])
-        s1 = sum(x)
-        x = par.expand_to(x, len(x) + 3)
-        s2 = sum(x)
-        self.assertEqual(s1, s2)
-        
 class TestSTFT(unittest.TestCase):
     def test_stft_number_of_spectrums_no_overlap(self):
         dt = 1

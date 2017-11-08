@@ -24,6 +24,14 @@ import scipy.fftpack
 from scipy import signal
 import dsplab.spectran as sp
 
+organ_names = [
+    'stomach',
+    'duodenum',
+    'nestis',
+    'ileum',
+    'colon',
+]
+
 egeg_fs = {
     'colon' : (0.01, 0.03),
     'stomach' : (0.03, 0.07),
@@ -47,14 +55,7 @@ def next_organ_name(organ_name):
         The name of next organ. If organ_name is nestis returns None.
 
     """
-    organs = [
-        'stomach',
-        'duodenum',
-        'nestis',
-        'ileum',
-        'colon',
-    ] # TODO: is it useful the global organs list?
-    for o_c, o_n in zip(organs[:-1], organs[1:]):
+    for o_c, o_n in zip(organ_names[:-1], organ_names[1:]):
         if o_c == organ_name:
             return o_n
     return None
