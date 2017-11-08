@@ -218,6 +218,15 @@ class TestDFIC(unittest.TestCase):
         x = np.array([random.randint(-1000, 1000) for i in range(4800)])
         p = par.dfic((0, 2), x, dt, nseg = 1200, nstep = 120)
         self.assertLess(0.3, p)
+
+class TestNextOrgan(unittest.TestCase):
+    def test_next_for_stomach(self):
+        n = par.next_organ_name('stomach')
+        self.assertEqual(n, 'duodenum')
+    
+    def test_next_for_(self):
+        n = par.next_organ_name('colon')
+        self.assertEqual(n, None)
         
 if __name__ == '__main__':
     unittest.main()

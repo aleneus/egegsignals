@@ -1,2 +1,4 @@
 * Functionality
 ** Add good helpers from norm-stat project
+* Organizing the code
+** Organize organs names and frequency bounds better

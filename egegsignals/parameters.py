@@ -32,6 +32,33 @@ egeg_fs = {
     'duodenum' : (0.18, 0.25),
 }
 
+def next_organ_name(organ_name):
+    """
+    Returns the name of next organ in gastro-intestinal tract.
+
+    Parametes
+    ---------
+    organ_name : str
+        The name of organ.
+    
+    Returns
+    -------
+    : str
+        The name of next organ. If organ_name is nestis returns None.
+
+    """
+    organs = [
+        'stomach',
+        'duodenum',
+        'nestis',
+        'ileum',
+        'colon',
+    ] # TODO: is it useful the global organs list?
+    for o_c, o_n in zip(organs[:-1], organs[1:]):
+        if o_c == organ_name:
+            return o_n
+    return None
+
 def dominant_frequency(spectrum, dt, fs):
     """
     Return dominant frequency of signal in band of frequencies.
