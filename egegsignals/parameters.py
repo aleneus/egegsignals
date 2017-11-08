@@ -32,22 +32,6 @@ egeg_fs = {
     'duodenum' : (0.18, 0.25),
 }
 
-# TODO: use dsplab
-def expand_to(x, new_len):
-    """Add zeros to signal. For doing magick with resolution in spectrum.
-
-    Returns
-    -------
-    : numpy.array
-        Signal expanded by zeros.
-    
-    """
-    if new_len <= len(x):
-        return x
-    x_exp = np.zeros(new_len)
-    x_exp[0 : len(x)] = x
-    return x_exp
-
 def dominant_frequency(spectrum, dt, fs):
     """
     Return dominant frequency of signal in band of frequencies.
@@ -197,7 +181,7 @@ def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     Xs=[]
     if padded:
         L = len(x) + (nseg - len(x) % nseg) % nseg
-        x = expand_to(x, L)
+        x = sp.expand_to(x, L)
 
     if not nfft:
         nseg_exp = nseg
@@ -206,7 +190,7 @@ def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
         
     for i in range(0, len(x)-nseg + 1, nstep):
         seg = x[i : i+nseg] * wind
-        seg = expand_to(seg, nseg_exp)
+        seg = sp.expand_to(seg, nseg_exp)
         X = abs(scipy.fftpack.fft(seg))
         Xs.append(X)
     return Xs
@@ -243,4 +227,21 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
     return np.std(dfs) / np.average(dfs)
 
-# TODO: test all after using dsplab
+# TODO: remove in new major version
+def expand_to(x, new_len):
+    """ Deprecated. Use dsplab instead. Add zeros to signal. For doing magick with resolution in spectrum.
+
+    Parameters
+    ----------
+    x : array_like
+        Signal values.
+    new_len : integer
+        New length.
+
+    Returns
+    -------
+    : numpy.ndarray
+        Signal expanded by zeros.
+    
+    """
+    return sp.expand_to(x, new_len)

@@ -21,26 +21,20 @@ import unittest
 import numpy as np
 import generators as gen
 import random
-
-class TestSpectrum(unittest.TestCase):
-    """Test suit for spectrum."""
-    def test_spectrum_lenght(self):
-        x = np.array([1,2,3,4,5])
-        X = par.spectrum(x)
-        self.assertEqual(len(X), len(x))
+from scipy.fftpack import fft
 
 class TestDominantFrequecy(unittest.TestCase):
     """Test suit for dominant_frequency."""
     def test_dominant_frequency_returns_value(self):
         dt = 0.5
         t, x = gen.harmonic(60, dt, 0.05)
-        p = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertTrue(p != None)
 
     def test_dominant_frequency_1_harmonic(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertAlmostEqual(p, 0.05, places=3)
 
     def test_dominant_frequency_2_harmonics_in_one_section(self):
@@ -48,16 +42,16 @@ class TestDominantFrequecy(unittest.TestCase):
         t, x1 = gen.harmonic(600, dt, 0.045, A=1)
         t, x2 = gen.harmonic(600, dt, 0.055, A=2)
         x = x1 + x2
-        p = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertAlmostEqual(p, 0.055, places=3)
         
     def test_dominant_frequency_different_dt(self):
         dt = 0.1
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p2 = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertAlmostEqual(p1, p2, places=3)
 
     def test_dominant_frequency_2_harmonics_in_different_sections(self):
@@ -65,7 +59,7 @@ class TestDominantFrequecy(unittest.TestCase):
         t, x1 = gen.harmonic(600, dt, 0.05, A=1)
         t, x2 = gen.harmonic(600, dt, 0.1, A=2)
         x = x1 + x2
-        p = par.dominant_frequency(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p = par.dominant_frequency(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertAlmostEqual(p, 0.05, places=3)
 
 class TestEnergy(unittest.TestCase):
@@ -73,30 +67,30 @@ class TestEnergy(unittest.TestCase):
     def test_energy_unit(self):
         dt = 0.5
         x = np.array([1,1,1,1,1,1,1,1,1,1]) # ten units # 5 sec
-        p = par.energy(par.spectrum(x), dt, [0, 1])
+        p = par.energy(abs(fft(x)), dt, [0, 1])
         self.assertEqual(p, 5)
     
     def test_energy_rectangle(self):
         dt = 0.5
         x = np.array([2,2,2,2,2,2,2,2,2,2]) # 5 sec
-        p = par.energy(par.spectrum(x), dt, [0, 1])
+        p = par.energy(abs(fft(x)), dt, [0, 1])
         self.assertEqual(p, 20)
         
     def test_energy_dont_rely_on_dt(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.energy(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.energy(abs(fft(x)), dt, par.egeg_fs['stomach'])
         dt = 0.05
         t, x = gen.harmonic(600, dt, 0.05)
-        p2 = par.energy(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.energy(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p1/p2 - 1), 0.01)
 
     def test_energy_proportional_to_length(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.energy(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.energy(abs(fft(x)), dt, par.egeg_fs['stomach'])
         t, x = gen.harmonic(600*10, dt, 0.05)
-        p2 = par.energy(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.energy(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p2/p1/10 - 1), 0.01)
         
 class TestPower(unittest.TestCase):
@@ -104,30 +98,30 @@ class TestPower(unittest.TestCase):
     def test_power_unit(self):
         dt=1
         x = np.array([1,1,1,1,1,1,1,1,1,1]) # 10 sec
-        p = par.power(par.spectrum(x), dt, (0, 1))
+        p = par.power(abs(fft(x)), dt, (0, 1))
         self.assertEqual(p, 1)
     
     def test_power_rectangle(self):
         dt=0.5
         x = np.array([2,2,2,2,2,2,2,2,2,2]) # 5 sec
-        p = par.power(par.spectrum(x), dt, (0, 1))
+        p = par.power(abs(fft(x)), dt, (0, 1))
         self.assertEqual(p, 4)
         
     def test_power_dont_rely_on_length(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.power(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.power(abs(fft(x)), dt, par.egeg_fs['stomach'])
         t, x = gen.harmonic(600*10, dt, 0.05)
-        p2 = par.power(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.power(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p2/p1 - 1), 0.01)
 
     def test_power_dont_rely_on_dt(self):
         dt = 0.05
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.power(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.power(abs(fft(x)), dt, par.egeg_fs['stomach'])
         dt = 0.01
         t, x = gen.harmonic(600, dt, 0.05)
-        p2 = par.power(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.power(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p2/p1 - 1), 0.01)
         
 class TestRhythmicity(unittest.TestCase):
@@ -135,9 +129,9 @@ class TestRhythmicity(unittest.TestCase):
     def test_rhythmicity_rely_on_power(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.rhythmicity(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.rhythmicity(abs(fft(x)), dt, par.egeg_fs['stomach'])
         t, x = gen.harmonic(600, dt, 0.05, A = 2)
-        p2 = par.rhythmicity(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.rhythmicity(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(p1, p2)
         
 class TestRhythmicityNorm(unittest.TestCase):
@@ -145,18 +139,18 @@ class TestRhythmicityNorm(unittest.TestCase):
     def test_rhythmicity_rely_on_power(self):
         dt = 0.5
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.rhythmicity_norm(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.rhythmicity_norm(abs(fft(x)), dt, par.egeg_fs['stomach'])
         t, x = gen.harmonic(600, dt, 0.05, A = 2)
-        p2 = par.rhythmicity_norm(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.rhythmicity_norm(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertEqual(p1/p2, 1)
         
     def test_rhythmicity_norm_dont_rely_on_dt(self):
         dt = 0.05
         t, x = gen.harmonic(600, dt, 0.05)
-        p1 = par.rhythmicity_norm(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p1 = par.rhythmicity_norm(abs(fft(x)), dt, par.egeg_fs['stomach'])
         dt = 0.01
         t, x = gen.harmonic(600, dt, 0.05, A = 2)
-        p2 = par.rhythmicity_norm(par.spectrum(x), dt, par.egeg_fs['stomach'])
+        p2 = par.rhythmicity_norm(abs(fft(x)), dt, par.egeg_fs['stomach'])
         self.assertLess(abs(p1/p2-1), 0.01)
 
 class TestExpandTo(unittest.TestCase):
