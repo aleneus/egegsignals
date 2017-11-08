@@ -31,23 +31,6 @@ egeg_fs = {
     'duodenum' : (0.18, 0.25),
 }
 
-# TODO: use dsplab of fftpack
-def spectrum(x):
-    """Return amplitude spectrum of signal.
-
-    Parameters
-    ----------
-    x : array_like
-        Signal.
-
-    Returns
-    -------
-    : numpy.array
-        Two-side amplitude spectrum.
-
-    """
-    return abs(scipy.fftpack.fft(x))
-
 # TODO: use dsplab
 def expand_to(x, new_len):
     """Add zeros to signal. For doing magick with resolution in spectrum.
@@ -71,7 +54,7 @@ def dominant_frequency(spectrum, dt, fs):
     Parameters
     ----------
     spectrum : array_like
-        Pre-calculated spectrum.
+        Pre-calculated two-side spectrum.
     dt : float 
         Sampling period.
     fs : array_like
@@ -95,7 +78,7 @@ def energy(spectrum, dt, fs):
     Parameters
     ----------
     spectrum : array_like
-       Pre-calculated spectrum.
+       Pre-calculated two-side spectrum.
     dt : float 
        Sampling period
     fs : array_like
@@ -118,7 +101,7 @@ def power(spectrum, dt, fs):
     Parameters
     ----------
     spectrum : array_like
-       Pre-calculated spectrum.
+       Pre-calculated tw-side spectrum.
     dt : float 
        Sampling period
     fs : array_like
@@ -139,7 +122,7 @@ def rhythmicity(spectrum, dt, fs):
     Parameters
     ----------
     spectrum : array_like
-       Pre-calculated spectrum.
+       Pre-calculated two-side spectrum.
     dt : float 
        Sampling period
     fs : array_like
@@ -164,7 +147,7 @@ def rhythmicity_norm(spectrum, dt, fs):
     Parameters
     ----------
     spectrum : array_like
-       Pre-calculated spectrum.
+       Pre-calculated two-side spectrum.
     dt : float 
        Sampling period
     fs : array_like
@@ -223,7 +206,7 @@ def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     for i in range(0, len(x)-nseg + 1, nstep):
         seg = x[i : i+nseg] * wind
         seg = expand_to(seg, nseg_exp)
-        X = spectrum(seg)
+        X = abs(scipy.fftpack.fft(seg))
         Xs.append(X)
     return Xs
 
