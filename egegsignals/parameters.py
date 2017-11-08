@@ -213,5 +213,5 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
 
 # TODO: remove
 def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
-    """ Deprecated. Return result of short-time fourier transform. """
+    """ Deprecated. Use dsplab instead. """
     return sp.stft(x=x, fs=1.0/dt, nseg=nseg, nstep=nstep, window='hamming', nfft=nfft, padded=padded)
