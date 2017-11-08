@@ -150,10 +150,61 @@ def rhythmicity_norm(spectrum, dt, fs):
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
-# TODO: use dsplab
+# TODO: name fs, fs seems to be a sampling frequency
+def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
+    """
+    Return dominant frequency instability coefficient.
+
+    Parameters
+    ----------
+    fs : array_like
+        Two frequencies bounds   
+    x : numpy.ndarray
+        Signal.
+    dt : float 
+       Sampling period.
+    window : str
+        Type of window.
+    nseg : int
+        Length of segment (in samples).
+    nstep : int
+        Length of step (in samples).
+    nfft : int 
+        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+
+    Returns
+    -------
+    : float
+        Value of parameter.
+
+    """
+    Xs = sp.stft(x, 1.0/dt, nseg, nstep, nfft, padded) # TODO: use window after updating dsplab
+    dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
+    return np.std(dfs) / np.average(dfs)
+
+# TODO: remove
+def expand_to(x, new_len):
+    """ Deprecated. Use dsplab instead. Add zeros to signal. For doing magick with resolution in spectrum.
+
+    Parameters
+    ----------
+    x : array_like
+        Signal values.
+    new_len : integer
+        New length.
+
+    Returns
+    -------
+    : numpy.ndarray
+        Signal expanded by zeros.
+    
+    """
+    return sp.expand_to(x, new_len)
+
+# TODO: remove
 def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """
-    Return result of short-time fourier transform.
+    Deprecated. Return result of short-time fourier transform.
 
     Parameters
     ----------
@@ -194,54 +245,3 @@ def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
         X = abs(scipy.fftpack.fft(seg))
         Xs.append(X)
     return Xs
-
-# TODO: name fs, fs seems to be a sampling frequency
-def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
-    """
-    Return dominant frequency instability coefficient.
-
-    Parameters
-    ----------
-    fs : array_like
-        Two frequencies bounds   
-    x : numpy.ndarray
-        Signal.
-    dt : float 
-       Sampling period.
-    window : str
-        Type of window.
-    nseg : int
-        Length of segment (in samples).
-    nstep : int
-        Length of step (in samples).
-    nfft : int 
-        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
-
-    Returns
-    -------
-    : float
-        Value of parameter.
-
-    """
-    Xs = stft(x, dt, nseg, nstep, window, nfft, padded)
-    dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
-    return np.std(dfs) / np.average(dfs)
-
-# TODO: remove in new major version
-def expand_to(x, new_len):
-    """ Deprecated. Use dsplab instead. Add zeros to signal. For doing magick with resolution in spectrum.
-
-    Parameters
-    ----------
-    x : array_like
-        Signal values.
-    new_len : integer
-        New length.
-
-    Returns
-    -------
-    : numpy.ndarray
-        Signal expanded by zeros.
-    
-    """
-    return sp.expand_to(x, new_len)
