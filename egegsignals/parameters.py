@@ -205,70 +205,12 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
         Value of parameter.
 
     """
-    Xs = sp.stft(x, 1.0/dt, nseg, nstep, nfft, padded) # TODO: use window after updating dsplab
+    # TODO: refact
+    Xs = sp.stft(x=x, fs=1.0/dt, nseg=nseg, nstep=nstep, window='hamming', nfft=nfft, padded=padded)
     dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
     return np.std(dfs) / np.average(dfs)
 
 # TODO: remove
-def expand_to(x, new_len):
-    """ Deprecated. Use dsplab instead. Add zeros to signal. For doing magick with resolution in spectrum.
-
-    Parameters
-    ----------
-    x : array_like
-        Signal values.
-    new_len : integer
-        New length.
-
-    Returns
-    -------
-    : numpy.ndarray
-        Signal expanded by zeros.
-    
-    """
-    return sp.expand_to(x, new_len)
-
-# TODO: remove
 def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
-    """
-    Deprecated. Return result of short-time fourier transform.
-
-    Parameters
-    ----------
-    x : numpy.ndarray
-        Signal.
-    dt : float
-       Sampling period.
-    window : str
-        Type of window.
-    nseg : int
-        Length of segment (in samples).
-    nstep : int
-        Length of step (in samples).
-    nfft : int 
-        Length of the FFT. If None or less than nseg, the FFT length is nseg.
-
-    Returns
-    -------
-
-    : list of numpy.ndarray
-        Result of STFT.
-    
-    """
-    wind = signal.get_window(window, nseg)
-    Xs=[]
-    if padded:
-        L = len(x) + (nseg - len(x) % nseg) % nseg
-        x = sp.expand_to(x, L)
-
-    if not nfft:
-        nseg_exp = nseg
-    else:
-        nseg_exp = max(nseg, nfft)
-        
-    for i in range(0, len(x)-nseg + 1, nstep):
-        seg = x[i : i+nseg] * wind
-        seg = sp.expand_to(seg, nseg_exp)
-        X = abs(scipy.fftpack.fft(seg))
-        Xs.append(X)
-    return Xs
+    """ Deprecated. Return result of short-time fourier transform. """
+    return sp.stft(x=x, fs=1.0/dt, nseg=nseg, nstep=nstep, window='hamming', nfft=nfft, padded=padded)
