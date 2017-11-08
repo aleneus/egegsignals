@@ -22,6 +22,7 @@
 import numpy as np
 import scipy.fftpack
 from scipy import signal
+import dsplab.spectran as sp
 
 egeg_fs = {
     'colon' : (0.01, 0.03),

@@ -36,6 +36,7 @@ setup(
         'numpy',
         'scipy',
         'nose',
+        'dsplab',
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
