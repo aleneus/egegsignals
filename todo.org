@@ -2,6 +2,12 @@
 * 1.0.5
 ** DONE Restructure todo list
 ** DONE Add develop branch
+** TODO Add examples, use modulation from dsplab to generate test signals
+** TODO License: Update years in copyright
+** TODO Setup: Use version numbers in requirements list
 * 2.0.0
 ** TODO Add good helpers from norm-stat project
 ** TODO Organize organs names and frequency bounds better
+** TODO Inspect names in dfic function
+** TODO Refactoring of dfic
+** TODO Remove stft from parameters, use stft from dsplab

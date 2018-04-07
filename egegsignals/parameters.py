@@ -178,7 +178,6 @@ def rhythmicity_norm(spectrum, dt, fs):
     envelope = sum([abs(spectrum[i] - spectrum[i-1]) for i in range(len(spectrum))])
     return  envelope / len(spectrum) / np.max(spectrum)
 
-# TODO: name fs, fs seems to be a sampling frequency
 def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """
     Return dominant frequency instability coefficient.
@@ -198,7 +197,8 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     nstep : int
         Length of step (in samples).
     nfft : int 
-        Length of the FFT. Use it for doing magick with resolution in spectrum. If None or less than nseg, the FFT length is nseg.
+        Length of the FFT. Use it for doing magick with resolution in
+        spectrum. If None or less than nseg, the FFT length is nseg.
 
     Returns
     -------
@@ -206,12 +206,10 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
         Value of parameter.
 
     """
-    # TODO: refact
     Xs = sp.stft(x=x, fs=1.0/dt, nseg=nseg, nstep=nstep, window='hamming', nfft=nfft, padded=padded)
     dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
     return np.std(dfs) / np.average(dfs)
 
-# TODO: remove
 def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """ Deprecated. Use dsplab instead. """
     return sp.stft(x=x, fs=1.0/dt, nseg=nseg, nstep=nstep, window='hamming', nfft=nfft, padded=padded)
