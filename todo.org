@@ -1,4 +1,6 @@
-* Functionality
-** Add good helpers from norm-stat project
-* Organizing the code
-** Organize organs names and frequency bounds better
+* <= 1.0.4
+* 1.0.5
+** DONE Restructure todo list
+* 2.0.0
+** TODO Add good helpers from norm-stat project
+** TODO Organize organs names and frequency bounds better
