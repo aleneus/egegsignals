@@ -1,6 +1,7 @@
 * <= 1.0.4
 * 1.0.5
 ** DONE Restructure todo list
+** DONE Add develop branch
 * 2.0.0
 ** TODO Add good helpers from norm-stat project
 ** TODO Organize organs names and frequency bounds better
