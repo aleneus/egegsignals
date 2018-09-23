@@ -202,7 +202,7 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     : float
         Value of parameter.
     """
-    Xs = sp.stft(x=x, fs=1.0/dt, nseg=nseg,
+    Xs = sp.stft(xdata=x, sample_rate=1.0/dt, nseg=nseg,
                  nstep=nstep, window='hamming', nfft=nfft, padded=padded)
     dfs = np.array([dominant_frequency(X, dt, fs) for X in Xs])
     return np.std(dfs) / np.average(dfs)
@@ -210,5 +210,5 @@ def dfic(fs, x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
 
 def stft(x, dt, nseg, nstep, window='hamming', nfft=None, padded=False):
     """Deprecated. Use dsplab instead."""
-    return sp.stft(x=x, fs=1.0/dt, nseg=nseg,
+    return sp.stft(xdata=x, sample_rate=1.0/dt, nseg=nseg,
                    nstep=nstep, window='hamming', nfft=nfft, padded=padded)

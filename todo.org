@@ -4,12 +4,12 @@
 ** DONE [t] License: Update years in copyright
 ** DONE [t] Brush code with pycodestyle and pyflakes
 ** DONE [t] Update hfart tests
-** TODO [t] Update parameters tests
+** DONE [t] Test and update stft call in parameters
 ** DONE [p] Remove context.py from tests and run tests from root folder of project
 ** TODO [t] Brush tests with pycodestyle and pyflakes
 ** TODO [e] Distribution: Add a global variable with version number
-* later
 ** TODO [t] Setup: Use version numbers in requirements list
+* later
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
 ** TODO [t] Refactoring of dfic
