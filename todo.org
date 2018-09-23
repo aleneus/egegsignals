@@ -9,6 +9,8 @@
 ** DONE [t] Brush tests with pycodestyle and pyflakes
 ** DONE [e] Add a variable for version to __init__.py
 ** DONE [t] Setup: Use version numbers in requirements list
+* 1.0.6
+** TODO [t] Use from and two value in version numbers of requirements
 * later
 ** TODO [e] Inspect all tests
 ** TODO [t] Brush tests with pylint
