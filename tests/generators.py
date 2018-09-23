@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov
+# Copyright (C) 2013 -- 2018 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import numpy as np
+
 
 def harmonic(T, dt, f, A=1, phi=0):
     """Generate harmonis signal."""

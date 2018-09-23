@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov
+# Copyright (C) 2013 -- 2018 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,27 +17,41 @@
 
 from setuptools import setup
 import os
+from egegsignals import __version__
+
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
     name="egegsignals",
-    version="1.0.4",
+    version=__version__,
     description="Package for processing EGG/EGEG signals",
+
     author="Aleksandr Popov",
     author_email="aleneus@gmail.com",
-    license = "GPLv3",
-    keywords = "electrophysiology electrogastrography electrogastroenterography biomedical signal processing",
-    url = "https://bitbucket.org/aleneus/egegsignals",
+
+    keywords="electrophysiology " +
+    "electrogastrography " +
+    "electrogastroenterography " +
+    "biomedical signal processing",
+
+    url="https://bitbucket.org/aleneus/egegsignals",
+
+    license="GPLv3",
+
     long_description=read('README'),
+
     packages=['egegsignals'],
-    install_requires = [
-        'numpy',
-        'scipy',
-        'nose',
-        'dsplab',
+
+    install_requires=[
+        'numpy>=1.14.0',
+        'scipy>=1.0.0',
+        'nose>=1.3.7',
+        'dsplab>=0.33.0',
     ],
+
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",

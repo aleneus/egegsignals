@@ -1,6 +1,28 @@
-* <= 1.0.4
 * 1.0.5
-** DONE Restructure todo list
+** DONE [t] Restructure todo list
+** DONE [t] Add develop branch
+** DONE [t] License: Update years in copyright
+** DONE [t] Brush code with pycodestyle and pyflakes
+** DONE [t] Update hfart tests
+** DONE [t] Test and update stft call in parameters
+** DONE [p] Remove context.py from tests and run tests from root folder of project
+** DONE [t] Brush tests with pycodestyle and pyflakes
+** DONE [e] Add a variable for version to __init__.py
+** DONE [t] Setup: Use version numbers in requirements list
+* later
+** TODO [e] Inspect all tests
+** TODO [t] Brush tests with pylint
+** TODO [t] Docs: Move docs to readthedocs.io
+** TODO [t] Docs: Add link to docs in README
+** TODO [t] Refactoring of dfic
+** TODO [e] Change description for GEM rhythmicity
+** TODO [t] Change style for documenting of parameters and returns in hfart
+** TODO [e] Brush package with pylint
 * 2.0.0
-** TODO Add good helpers from norm-stat project
-** TODO Organize organs names and frequency bounds better
+** TODO [t] Organize organs names and frequency bounds better
+** TODO [t] Inspect names in dfic function
+* later
+** TODO [e] Add examples, use modulation from dsplab to generate test signals
+** TODO [t] Add good helpers from norm-stat project
+** TODO [t] Remove stft from parameters, use stft from dsplab
+** TODO [t] Rename l parameter in hfart.hfa_filter()
