@@ -8,7 +8,7 @@
 ** DONE [p] Remove context.py from tests and run tests from root folder of project
 ** DONE [t] Brush tests with pycodestyle and pyflakes
 ** DONE [e] Add a variable for version to __init__.py
-** TODO [t] Setup: Use version numbers in requirements list
+** DONE [t] Setup: Use version numbers in requirements list
 * later
 ** TODO [e] Inspect all tests
 ** TODO [t] Brush tests with pylint

@@ -28,22 +28,30 @@ setup(
     name="egegsignals",
     version=__version__,
     description="Package for processing EGG/EGEG signals",
+
     author="Aleksandr Popov",
     author_email="aleneus@gmail.com",
-    license="GPLv3",
+
     keywords="electrophysiology " +
     "electrogastrography " +
     "electrogastroenterography " +
     "biomedical signal processing",
+
     url="https://bitbucket.org/aleneus/egegsignals",
+
+    license="GPLv3",
+
     long_description=read('README'),
+
     packages=['egegsignals'],
+
     install_requires=[
-        'numpy',
-        'scipy',
-        'nose',
-        'dsplab',
+        'numpy>=1.14.0',
+        'scipy>=1.0.0',
+        'nose>=1.3.7',
+        'dsplab>=0.33.0',
     ],
+
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
