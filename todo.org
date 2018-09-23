@@ -1,16 +1,18 @@
-* <= 1.0.4
 * 1.0.5
 ** DONE [t] Restructure todo list
 ** DONE [t] Add develop branch
-** TODO [e] Add examples, use modulation from dsplab to generate test signals
-** TODO [t] License: Update years in copyright
-** TODO [t] Setup: Use version numbers in requirements list
+** DONE [t] License: Update years in copyright
+** TODO [t] Brush code with pycodestyle and pyflakes
 ** TODO [e] Distribution: Add a global variable with version number
+* later
+** TODO [t] Setup: Use version numbers in requirements list
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
-* 1.1.0
-** TODO [t] Add good helpers from norm-stat project
+** TODO [t] Refactoring of dfic
+* 2.0.0
 ** TODO [t] Organize organs names and frequency bounds better
 ** TODO [t] Inspect names in dfic function
-** TODO [t] Refactoring of dfic
+* later
+** TODO [e] Add examples, use modulation from dsplab to generate test signals
+** TODO [t] Add good helpers from norm-stat project
 ** TODO [t] Remove stft from parameters, use stft from dsplab
