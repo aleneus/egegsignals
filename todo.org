@@ -6,10 +6,12 @@
 ** DONE [t] Update hfart tests
 ** DONE [t] Test and update stft call in parameters
 ** DONE [p] Remove context.py from tests and run tests from root folder of project
-** TODO [t] Brush tests with pycodestyle and pyflakes
+** DONE [t] Brush tests with pycodestyle and pyflakes
 ** TODO [e] Distribution: Add a global variable with version number
 ** TODO [t] Setup: Use version numbers in requirements list
 * later
+** TODO [e] Inspect all tests
+** TODO [t] Brush tests with pylint
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
 ** TODO [t] Refactoring of dfic
