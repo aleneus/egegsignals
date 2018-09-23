@@ -3,6 +3,10 @@
 ** DONE [t] Add develop branch
 ** DONE [t] License: Update years in copyright
 ** DONE [t] Brush code with pycodestyle and pyflakes
+** DONE [t] Update hfart tests
+** TODO [t] Update parameters tests
+** TODO [p] Remove context.py from tests and run tests from root folder of project
+** TODO [t] Brush tests with pycodestyle and pyflakes
 ** TODO [e] Distribution: Add a global variable with version number
 * later
 ** TODO [t] Setup: Use version numbers in requirements list

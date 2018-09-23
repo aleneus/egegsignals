@@ -1,6 +1,6 @@
 # egegsignals - Software for processing electrogastroenterography signals.
 
-# Copyright (C) 2013 -- 2017 Aleksandr Popov
+# Copyright (C) 2013 -- 2018 Aleksandr Popov
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .context import egegsignals
+import sys
+import os
+sys.path.insert(0, os.path.abspath('.'))
+
 from egegsignals import parameters as par
 import unittest
 import numpy as np
