@@ -17,6 +17,7 @@
 
 from setuptools import setup
 import os
+from egegsignals import __version__
 
 
 def read(fname):
@@ -25,7 +26,7 @@ def read(fname):
 
 setup(
     name="egegsignals",
-    version="1.0.4",
+    version=__version__,
     description="Package for processing EGG/EGEG signals",
     author="Aleksandr Popov",
     author_email="aleneus@gmail.com",

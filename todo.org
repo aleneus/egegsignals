@@ -7,7 +7,7 @@
 ** DONE [t] Test and update stft call in parameters
 ** DONE [p] Remove context.py from tests and run tests from root folder of project
 ** DONE [t] Brush tests with pycodestyle and pyflakes
-** TODO [e] Distribution: Add a global variable with version number
+** DONE [e] Add a variable for version to __init__.py
 ** TODO [t] Setup: Use version numbers in requirements list
 * later
 ** TODO [e] Inspect all tests
