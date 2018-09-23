@@ -18,8 +18,10 @@
 from setuptools import setup
 import os
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 setup(
     name="egegsignals",
@@ -27,12 +29,15 @@ setup(
     description="Package for processing EGG/EGEG signals",
     author="Aleksandr Popov",
     author_email="aleneus@gmail.com",
-    license = "GPLv3",
-    keywords = "electrophysiology electrogastrography electrogastroenterography biomedical signal processing",
-    url = "https://bitbucket.org/aleneus/egegsignals",
+    license="GPLv3",
+    keywords="electrophysiology " +
+    "electrogastrography " +
+    "electrogastroenterography " +
+    "biomedical signal processing",
+    url="https://bitbucket.org/aleneus/egegsignals",
     long_description=read('README'),
     packages=['egegsignals'],
-    install_requires = [
+    install_requires=[
         'numpy',
         'scipy',
         'nose',
