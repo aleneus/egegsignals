@@ -12,8 +12,7 @@
 * 1.0.6
 ** DONE [t] Brush tests with pylint
 ** DONE [e] Inspect all tests
-** TODO [p] Replace harmonic() to test_parameters.py
-** TODO [t] Use from and two value in version numbers of requirements
+** DONE [p] Replace harmonic() to test_parameters.py
 * later
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
@@ -21,6 +20,7 @@
 ** TODO [e] Change description for GEM rhythmicity
 ** TODO [t] Change style for documenting of parameters and returns in hfart
 ** TODO [e] Brush package with pylint
+** TODO [t] Use from and two value in version numbers of requirements
 * 2.0.0
 ** TODO [t] Organize organs names and frequency bounds better
 ** TODO [t] Inspect names in dfic function
