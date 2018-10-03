@@ -9,15 +9,18 @@
 ** DONE [t] Brush tests with pycodestyle and pyflakes
 ** DONE [e] Add a variable for version to __init__.py
 ** DONE [t] Setup: Use version numbers in requirements list
+* 1.0.6
+** DONE [t] Brush tests with pylint
+** DONE [e] Inspect all tests
+** DONE [p] Replace harmonic() to test_parameters.py
 * later
-** TODO [e] Inspect all tests
-** TODO [t] Brush tests with pylint
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
 ** TODO [t] Refactoring of dfic
 ** TODO [e] Change description for GEM rhythmicity
 ** TODO [t] Change style for documenting of parameters and returns in hfart
 ** TODO [e] Brush package with pylint
+** TODO [t] Use from and two value in version numbers of requirements
 * 2.0.0
 ** TODO [t] Organize organs names and frequency bounds better
 ** TODO [t] Inspect names in dfic function
