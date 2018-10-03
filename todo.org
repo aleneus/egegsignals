@@ -10,10 +10,11 @@
 ** DONE [e] Add a variable for version to __init__.py
 ** DONE [t] Setup: Use version numbers in requirements list
 * 1.0.6
+** DONE [t] Brush tests with pylint
+** DONE [e] Inspect all tests
+** TODO [p] Replace harmonic() to test_parameters.py
 ** TODO [t] Use from and two value in version numbers of requirements
 * later
-** TODO [e] Inspect all tests
-** TODO [t] Brush tests with pylint
 ** TODO [t] Docs: Move docs to readthedocs.io
 ** TODO [t] Docs: Add link to docs in README
 ** TODO [t] Refactoring of dfic
